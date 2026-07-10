@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block contenu %}
+
+<div class="container mt-4">
+
+<div class="card shadow">
+
+<div class="card-header bg-success text-white">
+    <h3>Appartement</h3>
+</div>
+
+<div class="card-body">
+
+<form method="post">
+
+{% csrf_token %}
+
+{{ form.as_p }}
+
+<button class="btn btn-success">
+    Enregistrer
+</button>
+
+<a href="{% url 'liste_appartements' %}"
+   class="btn btn-secondary">
+    Retour
+</a>
+
+</form>
+
+</div>
+
+</div>
+
+</div>
+
+{% endblock %}

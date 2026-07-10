@@ -1,0 +1,131 @@
+{% extends 'base.html' %}
+
+{% block contenu %}
+
+<div class="container mt-4">
+
+<h1>Tableau de Bord</h1>
+
+<div class="row">
+
+    <div class="col-lg-3 col-md-6 mb-3">
+
+        <div class="card bg-primary text-white shadow">
+
+            <div class="card-body">
+
+                <h5>🏢 Appartements</h5>
+
+                <h2>{{ nb_appartements }}</h2>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="col-lg-3 col-md-6 mb-3">
+
+        <div class="card bg-success text-white shadow">
+
+            <div class="card-body">
+
+                <h5>💵 Revenus</h5>
+
+                <h2>
+
+                    {{ revenus.net_a_payer__sum|default:0 }} $
+
+                </h2>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="col-lg-3 col-md-6 mb-3">
+
+        <div class="card bg-danger text-white shadow">
+
+            <div class="card-body">
+
+                <h5>💸 Dépenses</h5>
+
+                <h2>
+
+                    {{ depenses.montant__sum|default:0 }} $
+
+                </h2>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="col-lg-3 col-md-6 mb-3">
+
+        <div class="card bg-dark text-white shadow">
+
+            <div class="card-body">
+
+                <h5>📈 Bénéfice</h5>
+
+                <h2>
+
+                    {{ benefice }} $
+
+                </h2>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<div class="card shadow">
+
+<div class="card-header">
+
+Dernières Réservations
+
+</div>
+
+<div class="card-body">
+
+<table class="table table-bordered">
+
+<tr>
+
+<th>N°</th>
+<th>Client</th>
+<th>Appartement</th>
+<th>Montant</th>
+
+</tr>
+
+{% for r in dernieres %}
+
+<tr>
+
+<td>{{ r.id }}</td>
+<td>{{ r.nom_client }}</td>
+<td>{{ r.appartement }}</td>
+<td>{{ r.net_a_payer }}</td>
+
+</tr>
+
+{% endfor %}
+
+</table>
+
+</div>
+
+</div>
+
+</div>
+
+{% endblock %}

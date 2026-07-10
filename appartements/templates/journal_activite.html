@@ -1,0 +1,176 @@
+{% extends 'base.html' %}
+
+{% block titre %}
+Journal d'activité
+{% endblock %}
+
+{% block contenu %}
+
+<h2 class="mb-4">
+    📋 Journal d'activité
+</h2>
+
+<form method="get" class="row g-2 mb-3">
+    <div class="col-md-2">
+        <input type="date" name="date_debut"
+               value="{{ request.GET.date_debut }}"
+               class="form-control">
+    </div>
+
+    <div class="col-md-2">
+        <input type="date" name="date_fin"
+               value="{{ request.GET.date_fin }}"
+               class="form-control">
+    </div>
+
+    <div class="col-md-2">
+        <select name="utilisateur" class="form-select">
+            <option value="">Tous les utilisateurs</option>
+            {% for u in utilisateurs %}
+                <option value="{{ u.id }}"
+                    {% if request.GET.utilisateur == u.id|stringformat:"s" %}selected{% endif %}>
+                    {{ u.username }}
+                </option>
+            {% endfor %}
+        </select>
+    </div>
+
+    <div class="col-md-2">
+        <select name="module" class="form-select">
+            <option value="">Tous les modules</option>
+            {% for m in modules %}
+                <option value="{{ m }}"
+                    {% if request.GET.module == m %}selected{% endif %}>
+                    {{ m }}
+                </option>
+            {% endfor %}
+        </select>
+    </div>
+
+    <div class="col-md-2">
+        <input type="text" name="q"
+               value="{{ request.GET.q }}"
+               class="form-control"
+               placeholder="Recherche...">
+    </div>
+
+    <div class="col-md-1 d-grid">
+        <button type="submit" class="btn btn-primary">🔍</button>
+    </div>
+
+    <div class="col-md-1 d-grid">
+        <a href="{% url 'journal_activite' %}"
+           class="btn btn-secondary">↻</a>
+    </div>
+</form>
+
+
+<div class="card shadow">
+
+    <div class="card-body">
+
+        <div class="table-responsive">
+
+            <table class="table table-bordered table-hover">
+
+                <thead class="table-dark">
+
+                    <tr>
+
+                        <th>Date</th>
+
+                        <th>Utilisateur</th>
+
+                        <th>Module</th>
+
+                        <th>Action</th>
+
+                        <th>Description</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    {% for j in journaux %}
+
+                    <tr>
+
+                        <td>
+
+                            {{ j.date|date:"d/m/Y H:i" }}
+
+                        </td>
+
+                        <td>
+
+                            {{ j.utilisateur }}
+
+                        </td>
+
+                        <td>
+
+                            {{ j.module }}
+
+                        </td>
+
+                        <td>
+
+                            {% if j.action == "Création" %}
+
+                                <span class="badge bg-success">
+                                    {{ j.action }}
+                                </span>
+
+                            {% elif j.action == "Modification" %}
+
+                                <span class="badge bg-warning text-dark">
+                                    {{ j.action }}
+                                </span>
+
+                            {% elif j.action == "Suppression" %}
+
+                                <span class="badge bg-danger">
+                                    {{ j.action }}
+                                </span>
+
+                            {% else %}
+
+                                {{ j.action }}
+
+                            {% endif %}
+
+                        </td>
+
+                        <td>
+
+                            {{ j.description }}
+
+                        </td>
+
+                    </tr>
+
+                    {% empty %}
+
+                    <tr>
+
+                        <td colspan="5" class="text-center">
+
+                            Aucun journal disponible.
+
+                        </td>
+
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,211 @@
+{% extends 'base.html' %}
+
+{% block contenu %}
+
+<div class="container mt-4">
+
+<div class="card shadow">
+
+<div class="card-header bg-primary text-white">
+<h2>Nouvelle Réservation</h2>
+</div>
+
+<div class="card-body">
+
+<form method="post">
+
+
+{% if form.errors %}
+<div class="alert alert-danger">
+
+    {% for field in form %}
+        {% for error in field.errors %}
+            <p>{{ error }}</p>
+        {% endfor %}
+    {% endfor %}
+
+    {% for error in form.non_field_errors %}
+        <p class="text-danger fw-bold">
+            {{ error }}
+        </p>
+    {% endfor %}
+
+</div>
+{% endif %}
+
+
+
+
+{% csrf_token %}
+
+<div class="row g-3">
+
+    {% for field in form %}
+    <div class="col-12 col-md-4">
+
+        <label class="form-label" for="{{ field.id_for_label }}">
+            {{ field.label }}
+        </label>
+
+        {{ field }}
+
+        {% if field.errors %}
+        <div class="text-danger mt-1">
+            {{ field.errors }}
+        </div>
+        {% endif %}
+
+    </div>
+    {% endfor %}
+
+</div>
+
+<hr>
+
+<h5>Calcul automatique</h5>
+
+<p>
+<strong>Durée :</strong>
+<span id="duree">0</span>
+</p>
+
+<p>
+<strong>Net à payer :</strong>
+<span id="montant">0</span>
+</p>
+
+<button class="btn btn-success">
+Enregistrer
+</button>
+
+<a href="/" class="btn btn-secondary">
+Retour
+</a>
+
+</form>
+
+</div>
+
+</div>
+
+</div>
+
+<script>
+
+const appartements = {
+
+{% for a in appartements %}
+
+"{{ a.id }}": {
+jour: {{ a.prix_jour }},
+mois: {{ a.prix_mois }}
+},
+
+{% endfor %}
+
+};
+
+function calculer(){
+
+let appartement =
+document.getElementById("id_appartement").value;
+
+let type =
+document.getElementById("id_type_location").value;
+
+let arrivee =
+document.getElementById("id_date_arrivee").value;
+
+let depart =
+document.getElementById("id_date_depart").value;
+
+if(
+!appartement ||
+!arrivee ||
+!depart
+){
+return;
+}
+
+let d1 = new Date(arrivee);
+let d2 = new Date(depart);
+
+let duree = 0;
+
+if(type == "jour"){
+
+duree = Math.floor(
+(d2 - d1)/(1000*60*60*24)
+);
+
+montant =
+duree *
+appartements[appartement].jour;
+
+}else{
+
+duree =
+(d2.getFullYear()-d1.getFullYear())*12
++
+(d2.getMonth()-d1.getMonth());
+
+montant =
+duree *
+appartements[appartement].mois;
+
+}
+
+
+let autresFrais = parseFloat(
+    document.getElementById("id_autres_frais").value
+) || 0;
+
+montant += autresFrais;
+
+
+
+document.getElementById("duree").innerHTML =
+duree;
+
+document.getElementById("montant").innerHTML =
+montant;
+
+}
+
+document.getElementById(
+"id_appartement"
+).addEventListener(
+"change",
+calculer
+);
+
+document.getElementById(
+"id_type_location"
+).addEventListener(
+"change",
+calculer
+);
+
+document.getElementById(
+"id_date_arrivee"
+).addEventListener(
+"change",
+calculer
+);
+
+document.getElementById(
+"id_date_depart"
+).addEventListener(
+"change",
+calculer
+);
+
+document.getElementById(
+"id_autres_frais"
+).addEventListener(
+"input",
+calculer
+);
+</script>
+
+{% endblock %}

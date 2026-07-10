@@ -1,0 +1,262 @@
+{% extends 'base.html' %}
+
+{% block titre %}
+Facture
+{% endblock %}
+
+{% block contenu %}
+
+{% load static %}
+
+<div class="container mt-2">
+
+    <div class="facture">
+
+           <div class="row align-items-center mb-4">
+
+
+    <div class="text-center mb-4">
+
+        <img src="{% static 'images/logo.png' %}"
+            style="width:120px;"
+            class="mb-3">
+
+        <h2 class="fw-bold text-primary">
+            Ets LES 26 PROVINCES
+        </h2>
+
+        <p class="mb-1">
+            RCCM : 22-A-0091 - Id Nat : XXXXXXXX - N° Impôt : XXXXXXXX
+        </p>
+
+        <p class="mb-1">
+            📍 Kisangani - République Démocratique du Congo
+        </p>
+
+        <p class="mb-1">
+            ☎ +243 997 184 984 ✉ etsles26province@gmail.com
+        </p>
+
+
+    </div>
+
+    <hr class="my-2">
+
+<h3 class="text-center fw-bold mb-1">
+    FACTURE DE LOCATION
+</h3>
+
+<hr class="my-2">
+
+        <table class="table table-bordered mb-1">
+
+                <tr>
+
+                    <td width="50%">
+                        <strong>N° Facture :</strong>
+                        FAC-{{ reservation.date_reservation|date:"Y" }}-{{ reservation.id|stringformat:"06d" }}
+                    </td>
+
+                    <td width="50%" class="text-end">
+                        <strong>Date :</strong>
+                        {{ reservation.date_reservation|date:"d/m/Y" }}
+                    </td>
+
+                </tr>
+
+            </table>
+
+            <table class="table table-bordered">
+
+                <tbody>
+
+                    <tr>
+                        <th width="35%">Client</th>
+                        <td>{{ reservation.nom_client }}</td>
+                    </tr>
+
+                    <tr>
+                        <th>Appartement</th>
+                        <td>{{ reservation.appartement }}</td>
+                    </tr>
+
+                    <tr>
+                        <th>Type de location</th>
+                        <td>{{ reservation.type_location }}</td>
+                    </tr>
+
+                    <tr>
+                        <th>Date de réservation</th>
+                        <td>{{ reservation.date_reservation }}</td>
+                    </tr>
+
+                    <tr>
+                        <th>Date d'arrivée</th>
+                        <td>{{ reservation.date_arrivee }}</td>
+                    </tr>
+
+                    <tr>
+                        <th>Date de départ</th>
+                        <td>{{ reservation.date_depart }}</td>
+                    </tr>
+
+                    <tr>
+                        <th>Durée</th>
+                        <td>{{ reservation.duree }}</td>
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+            <table class="table table-bordered">
+
+                <thead class="table-dark">
+
+                    <tr>
+
+                        <th>Désignation</th>
+
+                        <th class="text-end">
+                            Montant ($)
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    <tr>
+
+                        <td>
+
+                            Location Appartement
+
+                        </td>
+
+                        <td class="text-end">
+
+                            {{ reservation.net_a_payer|add:"-0"|floatformat:2 }}
+
+                        </td>
+
+                    </tr>
+
+                    <tr>
+
+                        <td>
+
+                            Autres frais
+
+                        </td>
+
+                        <td class="text-end">
+
+                            {{ reservation.autres_frais }}
+
+                        </td>
+
+                    </tr>
+
+                    <tr class="table-primary">
+
+                        <th>
+
+                            TOTAL A PAYER
+
+                        </th>
+
+                        <th class="text-end">
+
+                            {{ reservation.net_a_payer }}
+
+                        </th>
+
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        <div class="row signature align-items-end">
+
+            <div class="col-4 text-center">
+
+                _______________________
+
+                <br>
+
+                Signature du Client
+
+            </div>
+
+            <div class="col-4 text-center">
+
+                <img
+                    src="{% url 'qr_facture' reservation.id %}"
+                    width="120"
+                    class="img-fluid">
+
+                <br>
+
+                <small>
+                    Scanner pour vérifier la facture
+                </small>
+
+            </div>
+
+            <div class="col-4 text-center">
+
+                _______________________
+
+                <br>
+
+                Gestionnaire
+
+            </div>
+
+        </div>
+
+            <hr>
+
+            <p class="text-center mt-4">
+
+            <strong>
+            Merci de votre confiance.
+            </strong>
+
+            <br>
+
+            Nous espérons vous accueillir à nouveau prochainement.
+
+            </p>
+
+            <hr>
+
+            <div class="text-center no-print">
+
+                <button
+                    onclick="window.print()"
+                    class="btn btn-success">
+
+                    🖨 Imprimer
+
+                </button>
+
+                <a href="{% url 'liste_reservations' %}"
+                   class="btn btn-secondary">
+
+                    Retour
+
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

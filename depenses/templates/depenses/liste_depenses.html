@@ -1,0 +1,221 @@
+{% extends 'base.html' %}
+
+{% block titre %}
+Liste des Dépenses
+{% endblock %}
+
+{% block contenu %}
+
+<div class="container-fluid">
+
+    <div class="d-flex justify-content-between mb-3">
+
+        <h2>💸 Liste des Dépenses</h2>
+
+        <div>
+
+            <a href="{% url 'ajouter_depense' %}"
+            class="btn btn-primary">
+
+                Nouvelle Dépense
+
+            </a>
+
+            <a href="{% url 'imprimer_depenses' %}?{{ request.GET.urlencode }}"
+            class="btn btn-success">
+
+                🖨️ Imprimer
+
+            </a>
+
+        </div>
+
+    </div>
+
+    <div class="card shadow">
+
+        <div class="card-body">
+
+            <form method="get" class="mb-4">
+
+            <div class="row g-2 align-items-end">
+
+                <div class="col-md-2">
+                    <label class="form-label">Du</label>
+                    <input
+                        type="date"
+                        name="date_debut"
+                        class="form-control"
+                        value="{{ request.GET.date_debut }}">
+                </div>
+
+                <div class="col-md-2">
+                    <label class="form-label">Au</label>
+                    <input
+                        type="date"
+                        name="date_fin"
+                        class="form-control"
+                        value="{{ request.GET.date_fin }}">
+                </div>
+
+                <div class="col-md-2">
+                    <label class="form-label">Catégorie</label>
+                    <select
+                        name="categorie"
+                        class="form-select">
+
+                        <option value="">Toutes</option>
+
+                        {% for code, nom in categories %}
+
+                        <option value="{{ code }}"
+                            {% if request.GET.categorie == code %}selected{% endif %}>
+                            {{ nom }}
+                        </option>
+
+                        {% endfor %}
+
+                    </select>
+                </div>
+
+                <div class="col-md-3">
+                    <label class="form-label">Libellé</label>
+                    <input
+                        type="text"
+                        name="q"
+                        class="form-control"
+                        placeholder="Libellé"
+                        value="{{ request.GET.q }}">
+                </div>
+
+                <div class="col-auto">
+                    <button class="btn btn-primary w-100" title="Rechercher">
+                        <i class="bi bi-search"></i>
+                    </button>
+                </div>
+
+                <div class="col-auto">
+                    <a href="{% url 'liste_depenses' %}"
+                        class="btn btn-secondary w-100"
+                        title="Réinitialiser">
+                        <i class="bi bi-arrow-clockwise"></i>
+                    </a>
+                </div>
+
+            </div>
+
+            </form>
+
+            <div class="table-responsive">
+
+                <table class="table table-bordered table-hover">
+
+                    <thead class="table-dark">
+
+                        <tr>
+
+                            <th>Date</th>
+
+                            <th>Libellé</th>
+
+                            <th>Catégorie</th>
+
+                            <th class="text-end">
+
+                                Montant
+
+                            </th>
+
+                            <th width="220" class="text-center">
+                                Actions
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody>
+
+                        {% for d in depenses %}
+
+                        <tr>
+
+                            <td>{{ d.date }}</td>
+
+                            <td>{{ d.libelle }}</td>
+
+                            <td>{{ d.categorie }}</td>
+
+                            <td class="text-end">
+
+                                {{ d.montant }}
+
+                            </td>
+
+                            <td class="text-center">
+
+                                <div class="d-flex justify-content-center gap-1">
+
+                                    <a
+                                        href="{% url 'modifier_depense' d.id %}"
+                                        class="btn btn-warning btn-sm">
+
+                                        Modifier
+
+                                    </a>
+
+                                    <a
+                                        href="{% url 'supprimer_depense' d.id %}"
+                                        class="btn btn-danger btn-sm"
+                                        onclick="return confirm('Supprimer cette dépense ?');">
+
+                                        Supprimer
+
+                                    </a>
+
+                                </div>
+
+                            </td>
+
+                        </tr>
+
+                        {% empty %}
+
+                        <tr>
+
+                            <td colspan="5"
+                                class="text-center">
+
+                                Aucune dépense enregistrée.
+
+                            </td>
+
+                        </tr>
+
+                        {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+            <div class="alert alert-success mt-3">
+
+                <h4>
+
+                    Total des dépenses :
+
+                    {{ total.montant__sum|default:0 }} $
+
+                </h4>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

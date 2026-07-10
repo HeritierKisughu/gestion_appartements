@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+
+{% block contenu %}
+
+<div class="container mt-4">
+
+    <div class="d-flex justify-content-between mb-3">
+
+        <h2>Liste des Appartements</h2>
+
+        <a href="{% url 'ajouter_appartement' %}"
+           class="btn btn-success">
+            Nouvel Appartement
+        </a>
+
+    </div>
+
+    <div class="card shadow">
+
+        <div class="card-body">
+
+            <table class="table table-bordered table-striped">
+
+                <thead class="table-dark">
+
+                <tr>
+                    <th>ID</th>
+                    <th>Nom</th>
+                    <th>Prix/Jour</th>
+                    <th>Prix/Mois</th>
+                    <th>Actions</th>
+                </tr>
+
+                </thead>
+
+                <tbody>
+
+                {% for a in appartements %}
+
+                <tr>
+
+                    <td>{{ a.id }}</td>
+                    <td>{{ a.nom }}</td>
+                    <td>{{ a.prix_jour }}</td>
+                    <td>{{ a.prix_mois }}</td>
+
+                    <td>
+
+                        <a href="{% url 'modifier_appartement' a.id %}"
+                           class="btn btn-warning btn-sm">
+                            Modifier
+                        </a>
+
+                        <a href="{% url 'supprimer_appartement' a.id %}"
+                           class="btn btn-danger btn-sm"
+                           onclick="return confirm('Supprimer cet appartement ?')">
+                            Supprimer
+                        </a>
+
+                    </td>
+
+                </tr>
+
+                {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}
