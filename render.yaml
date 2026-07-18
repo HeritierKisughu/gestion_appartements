@@ -1,0 +1,17 @@
+services:
+  - type: web
+    name: gestion-appartements
+    env: python
+
+    buildCommand: "./build.sh"
+
+    startCommand: "gunicorn config.wsgi:application"
+
+    plan: free
+
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.12.2
+
+      - key: DJANGO_SETTINGS_MODULE
+        value: config.settings

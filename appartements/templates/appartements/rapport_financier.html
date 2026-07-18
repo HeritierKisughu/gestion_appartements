@@ -142,7 +142,7 @@ Rapport Financier
 
                     <h5>Revenus</h5>
 
-                    <h3>{{ revenus }} $</h3>
+                    <h3>{{ revenus|floatformat:2 }} $</h3>
 
                 </div>
 
@@ -158,7 +158,7 @@ Rapport Financier
 
                     <h5>Dépenses</h5>
 
-                    <h3>{{ depenses_total }} $</h3>
+                    <h3>{{ depenses_total|floatformat:2 }} $</h3>
 
                 </div>
 
@@ -174,7 +174,7 @@ Rapport Financier
 
                     <h5>Bénéfice Net</h5>
 
-                    <h3>{{ benefice }} $</h3>
+                    <h3>{{ benefice|floatformat:2 }} $</h3>
 
                 </div>
 

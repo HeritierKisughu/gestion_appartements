@@ -34,7 +34,7 @@
 
                 <h2>
 
-                    {{ revenus.net_a_payer__sum|default:0 }} $
+                    {{ revenus.net_a_payer__sum|floatformat:2 }} $
 
                 </h2>
 
@@ -54,7 +54,7 @@
 
                 <h2>
 
-                    {{ depenses.montant__sum|default:0 }} $
+                    {{ depenses.montant__sum|floatformat:2 }} $
 
                 </h2>
 
@@ -74,7 +74,7 @@
 
                 <h2>
 
-                    {{ benefice }} $
+                    {{ benefice|floatformat:2 }} $
 
                 </h2>
 
