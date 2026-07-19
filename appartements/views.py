@@ -113,25 +113,15 @@ def ajouter_reservation(request):
         form = ReservationForm(request.POST)
 
         if form.is_valid():
-            form.save()
-
 
             reservation = form.save()
 
             enregistrer_activite(
-
                 request,
-
                 "Réservation",
-
                 "Création",
-
                 f"Réservation N°{reservation.id} créée pour {reservation.nom_client}"
-
             )
-
-
-
 
             return redirect('liste_reservations')
 

@@ -1,19 +1,10 @@
 from django import forms
 from .models import Appartement, Reservation
-from django import forms
-from .models import Reservation
 
 class AppartementForm(forms.ModelForm):
     class Meta:
         model = Appartement
         fields = '__all__'
-
-
-class AppartementForm(forms.ModelForm):
-    class Meta:
-        model = Appartement
-        fields = '__all__'
-
 
 class ReservationForm(forms.ModelForm):
 
