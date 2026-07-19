@@ -27,6 +27,8 @@ from .models import JournalActivite
 
 from django.contrib.auth.models import User
 
+from .utils import enregistrer_activite
+
 #def liste_reservations(request):
 
     #recherche = request.GET.get('q')
@@ -112,18 +114,31 @@ def ajouter_reservation(request):
     if request.method == 'POST':
         form = ReservationForm(request.POST)
 
+        import traceback
+
         if form.is_valid():
 
-            reservation = form.save()
+            try:
 
-            enregistrer_activite(
-                request,
-                "Réservation",
-                "Création",
-                f"Réservation N°{reservation.id} créée pour {reservation.nom_client}"
-            )
+                reservation = form.save()
 
-            return redirect('liste_reservations')
+                enregistrer_activite(
+                    request,
+                    "Réservation",
+                    "Création",
+                    f"Réservation N°{reservation.id} créée pour {reservation.nom_client}"
+                )
+
+                return redirect("liste_reservations")
+
+            except Exception as e:
+
+                print("=" * 80)
+                print("ERREUR RESERVATION")
+                traceback.print_exc()
+                print("=" * 80)
+
+                raise
 
     else:
         form = ReservationForm()
