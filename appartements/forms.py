@@ -1,5 +1,5 @@
 from django import forms
-from .models import Appartement, Reservation
+from .models import Appartement, Reservation, Paiement
 
 class AppartementForm(forms.ModelForm):
     class Meta:
@@ -54,3 +54,49 @@ class ReservationForm(forms.ModelForm):
                 )
 
         return cleaned_data
+
+
+class PaiementForm(forms.ModelForm):
+
+    class Meta:
+        model = Paiement
+
+        fields = [
+            'montant',
+            'mode_paiement',
+            'reference',
+            'observation',
+        ]
+
+        widgets = {
+
+            'montant': forms.NumberInput(
+                attrs={
+                    'class': 'form-control',
+                    'step': '0.01',
+                    'min': '0.01',
+                    'placeholder': 'Montant payé'
+                }
+            ),
+
+            'mode_paiement': forms.Select(
+                attrs={
+                    'class': 'form-select'
+                }
+            ),
+
+            'reference': forms.TextInput(
+                attrs={
+                    'class': 'form-control',
+                    'placeholder': 'Référence du paiement (facultatif)'
+                }
+            ),
+
+            'observation': forms.Textarea(
+                attrs={
+                    'class': 'form-control',
+                    'rows': 2,
+                    'placeholder': 'Observation (facultatif)'
+                }
+            ),
+        }

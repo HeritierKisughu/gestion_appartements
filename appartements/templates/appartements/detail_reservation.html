@@ -1,0 +1,432 @@
+{% extends 'base.html' %}
+
+{% block titre %}
+Détail de la réservation
+{% endblock %}
+
+
+{% block contenu %}
+
+<div class="container mt-4">
+
+    <div class="d-flex justify-content-between align-items-center mb-3">
+
+        <h2>
+            <i class="bi bi-calendar-check"></i>
+            Réservation #{{ reservation.id }}
+        </h2>
+
+        <a
+            href="{% url 'liste_reservations' %}"
+            class="btn btn-secondary">
+
+            <i class="bi bi-arrow-left"></i>
+            Retour
+
+        </a>
+
+    </div>
+
+
+    <!-- INFORMATIONS RÉSERVATION -->
+
+    <div class="card shadow mb-4">
+
+        <div class="card-header bg-primary text-white">
+
+            <h4 class="mb-0">
+                Informations de la réservation
+            </h4>
+
+        </div>
+
+
+        <div class="card-body">
+
+            <div class="row g-3">
+
+
+                <div class="col-md-4">
+
+                    <strong>Client</strong>
+
+                    <div>
+                        {{ reservation.nom_client }}
+                    </div>
+
+                </div>
+
+
+                <div class="col-md-4">
+
+                    <strong>Appartement</strong>
+
+                    <div>
+                        {{ reservation.appartement }}
+                    </div>
+
+                </div>
+
+
+                <div class="col-md-4">
+
+                    <strong>Type de location</strong>
+
+                    <div>
+                        {{ reservation.type_location }}
+                    </div>
+
+                </div>
+
+
+                <div class="col-md-4">
+
+                    <strong>Date de réservation</strong>
+
+                    <div>
+                        {{ reservation.date_reservation|date:"d/m/Y" }}
+                    </div>
+
+                </div>
+
+
+                <div class="col-md-4">
+
+                    <strong>Date d'arrivée</strong>
+
+                    <div>
+                        {{ reservation.date_arrivee|date:"d/m/Y" }}
+                    </div>
+
+                </div>
+
+
+                <div class="col-md-4">
+
+                    <strong>Date de départ</strong>
+
+                    <div>
+                        {{ reservation.date_depart|date:"d/m/Y" }}
+                    </div>
+
+                </div>
+
+
+                <div class="col-md-4">
+
+                    <strong>Durée</strong>
+
+                    <div>
+                        {{ reservation.duree }}
+                    </div>
+
+                </div>
+
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- RÉSUMÉ FINANCIER -->
+
+    <div class="row g-3 mb-4">
+
+
+        <div class="col-md-4">
+
+            <div class="card border-primary shadow-sm h-100">
+
+                <div class="card-body">
+
+                    <small class="text-muted">
+                        Total réservation
+                    </small>
+
+                    <h3 class="text-primary">
+
+                        {{ reservation.net_a_payer|floatformat:2 }}
+                        $
+
+                    </h3>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="col-md-4">
+
+            <div class="card border-success shadow-sm h-100">
+
+                <div class="card-body">
+
+                    <small class="text-muted">
+                        Total payé
+                    </small>
+
+                    <h3 class="text-success">
+
+                        {{ total_paye|floatformat:2 }}
+                        $
+
+                    </h3>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="col-md-4">
+
+            <div class="card border-danger shadow-sm h-100">
+
+                <div class="card-body">
+
+                    <small class="text-muted">
+                        Reste à payer
+                    </small>
+
+                    <h3 class="text-danger">
+
+                        {{ reste_a_payer|floatformat:2 }}
+                        $
+
+                    </h3>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- STATUT -->
+
+    <div class="card shadow mb-4">
+
+        <div class="card-body text-center">
+
+            <h5 class="mb-3">
+                Statut du paiement
+            </h5>
+
+
+            {% if statut == "PAYÉ" %}
+
+                <span class="badge bg-success fs-5 px-4 py-2">
+
+                    <i class="bi bi-check-circle"></i>
+                    PAYÉ
+
+                </span>
+
+
+            {% elif statut == "PARTIELLEMENT PAYÉ" %}
+
+                <span class="badge bg-warning text-dark fs-5 px-4 py-2">
+
+                    <i class="bi bi-hourglass-split"></i>
+                    PARTIELLEMENT PAYÉ
+
+                </span>
+
+
+            {% else %}
+
+                <span class="badge bg-danger fs-5 px-4 py-2">
+
+                    <i class="bi bi-exclamation-circle"></i>
+                    IMPAYÉ
+
+                </span>
+
+            {% endif %}
+
+        </div>
+
+    </div>
+
+
+    <!-- HISTORIQUE -->
+
+    <div class="card shadow mb-4">
+
+        <div class="card-header bg-dark text-white">
+
+            <div class="d-flex justify-content-between align-items-center">
+
+                <h4 class="mb-0">
+
+                    <i class="bi bi-clock-history"></i>
+                    Historique des paiements
+
+                </h4>
+
+
+                {% if reste_a_payer > 0 %}
+
+                <a
+                    href="{% url 'ajouter_paiement' reservation.id %}"
+                    class="btn btn-success">
+
+                    <i class="bi bi-cash-coin"></i>
+                    Ajouter un paiement
+
+                </a>
+
+                {% endif %}
+
+            </div>
+
+        </div>
+
+
+        <div class="card-body p-0">
+
+            <div class="table-responsive">
+
+                <table class="table table-bordered table-striped mb-0">
+
+                    <thead>
+
+                        <tr>
+
+                            <th>Date</th>
+
+                            <th>Montant</th>
+
+                            <th>Mode de paiement</th>
+
+                            <th>Référence</th>
+
+                            <th>Observation</th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody>
+
+                    {% for paiement in paiements %}
+
+                    <tr>
+
+                        <td>
+
+                            {{ paiement.date_paiement|date:"d/m/Y H:i" }}
+
+                        </td>
+
+
+                        <td class="text-end">
+
+                            <strong>
+
+                                {{ paiement.montant|floatformat:2 }}
+                                $
+
+                            </strong>
+
+                        </td>
+
+
+                        <td>
+
+                            {{ paiement.get_mode_paiement_display }}
+
+                        </td>
+
+
+                        <td>
+
+                            {{ paiement.reference|default:"-" }}
+
+                        </td>
+
+
+                        <td>
+
+                            {{ paiement.observation|default:"-" }}
+
+                        </td>
+
+                    </tr>
+
+
+                    {% empty %}
+
+                    <tr>
+
+                        <td
+                            colspan="5"
+                            class="text-center text-muted py-4">
+
+                            <i class="bi bi-info-circle"></i>
+
+                            Aucun paiement enregistré.
+
+                        </td>
+
+                    </tr>
+
+                    {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ACTIONS -->
+
+    <div class="mb-4">
+
+        <a
+            href="{% url 'facture' reservation.id %}"
+            class="btn btn-primary">
+
+            <i class="bi bi-receipt"></i>
+            Facture
+
+        </a>
+
+
+        <a
+            href="{% url 'modifier_reservation' reservation.id %}"
+            class="btn btn-warning">
+
+            <i class="bi bi-pencil"></i>
+            Modifier
+
+        </a>
+
+
+        <a
+            href="{% url 'liste_reservations' %}"
+            class="btn btn-secondary">
+
+            <i class="bi bi-arrow-left"></i>
+            Retour aux réservations
+
+        </a>
+
+    </div>
+
+</div>
+
+{% endblock %}

@@ -112,62 +112,192 @@
 
         }
 
+        /* =========================
+        FACTURE
+        ========================= */
+
         .facture {
             max-width: 850px;
             margin: auto;
             background: white;
-            padding: 20px 30px;
+            padding: 15px 25px;
             border: 1px solid #ddd;
         }
 
-        .facture p{
-            margin-bottom:4px;
+        .facture p {
+            margin-bottom: 2px;
+            line-height: 1.2;
         }
 
         .facture h2,
-        .facture h3{
-            margin-bottom:8px;
+        .facture h3,
+        .facture h4,
+        .facture h5 {
+            margin-top: 3px;
+            margin-bottom: 4px;
         }
 
-        .facture .table{
-            margin-bottom:5px;
+        .facture hr {
+            margin: 5px 0;
         }
 
-        .signature{
-            margin-top:0;
+        .facture .table {
+            margin-bottom: 5px;
         }
 
+        .facture .table th,
+        .facture .table td {
+            padding: 3px 6px;
+            line-height: 1.2;
+            vertical-align: middle;
+        }
 
+        .facture .signature {
+            margin-top: 8px;
+        }
 
-        @media print{
+        .facture .logo {
+            width: 95px;
+        }
 
-            body{
-                background:white;
+        /* =========================
+        IMPRESSION A4
+        ========================= */
+
+        @media print {
+
+            body {
+                background: white !important;
+                margin: 0;
+                padding: 0;
             }
 
             .sidebar,
-            .no-print{
-                display:none !important;
+            .no-print {
+                display: none !important;
             }
 
-            .col-md-10{
-                width:100% !important;
-                margin:0 !important;
-                padding:0 !important;
+            .col-md-10 {
+                width: 100% !important;
+                margin: 0 !important;
+                padding: 0 !important;
             }
 
-            .facture{
-                width:100%;
-                max-width:100%;
-                border:none;
-                box-shadow:none;
-                margin:0;
-                padding:10px;
+            .facture {
+                width: 100%;
+                max-width: 100%;
+                border: none;
+                box-shadow: none;
+                margin: 0;
+                padding: 5px;
             }
 
-            @page{
-                size:A4;
-                margin:8mm;
+            .facture .table th,
+            .facture .table td {
+                padding: 3px 5px;
+                font-size: 12px;
+            }
+
+            .facture p {
+                font-size: 12px;
+                margin-bottom: 2px;
+            }
+
+            .facture h2 {
+                font-size: 20px;
+            }
+
+            .facture h3 {
+                font-size: 16px;
+            }
+
+            .facture .logo {
+                width: 80px;
+            }
+
+            @page {
+                size: A4;
+                margin: 8mm;
+            }
+        }
+
+        /* =========================
+        TICKET 80 MM
+        ========================= */
+
+        @media print {
+
+            body.impression-ticket {
+
+                width: 80mm !important;
+                background: white !important;
+            }
+
+            body.impression-ticket .facture {
+
+                width: 80mm !important;
+                max-width: 80mm !important;
+
+                padding: 3mm !important;
+                margin: 0 !important;
+
+                border: none !important;
+                box-shadow: none !important;
+            }
+
+            body.impression-ticket .facture .logo {
+
+                width: 55px !important;
+            }
+
+            body.impression-ticket .facture h2 {
+
+                font-size: 15px !important;
+            }
+
+            body.impression-ticket .facture h3 {
+
+                font-size: 13px !important;
+            }
+
+            body.impression-ticket .facture p {
+
+                font-size: 9px !important;
+                margin-bottom: 1px !important;
+            }
+
+            body.impression-ticket .facture .table {
+
+                font-size: 9px !important;
+                margin-bottom: 3px !important;
+            }
+
+            body.impression-ticket .facture .table th,
+            body.impression-ticket .facture .table td {
+
+                padding: 2px 3px !important;
+                line-height: 1.1 !important;
+            }
+
+            body.impression-ticket .facture hr {
+
+                margin: 3px 0 !important;
+            }
+
+            body.impression-ticket .ticket-hide {
+
+                display: none !important;
+            }
+
+            body.impression-ticket .signature {
+
+                font-size: 8px !important;
+            }
+
+            @page {
+
+                size: 80mm auto;
+                margin: 0;
             }
 
         }
@@ -206,7 +336,7 @@
 
     <div class="row">
 
-        <div id="sidebar" class="col-md-2 sidebar">
+        <div id="sidebar" class="col-md-2 sidebar no-print">
 
             <h4 class="text-white mt-3 text-center">
                 APPARTEMENTS

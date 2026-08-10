@@ -142,6 +142,53 @@ class Reservation(models.Model):
         return f"{self.id} - {self.nom_client}"
     
 
+class Paiement(models.Model):
+
+    reservation = models.ForeignKey(
+        Reservation,
+        on_delete=models.CASCADE,
+        related_name='paiements'
+    )
+
+    date_paiement = models.DateTimeField(
+        auto_now_add=True
+    )
+
+    montant = models.DecimalField(
+        max_digits=12,
+        decimal_places=2
+    )
+
+    mode_paiement = models.CharField(
+        max_length=50,
+        choices=[
+            ('especes', 'Espèces'),
+            ('mobile_money', 'Mobile Money'),
+            ('virement', 'Virement bancaire'),
+            ('autre', 'Autre'),
+        ],
+        default='especes'
+    )
+
+    reference = models.CharField(
+        max_length=100,
+        blank=True,
+        null=True
+    )
+
+    observation = models.TextField(
+        blank=True,
+        null=True
+    )
+
+    def __str__(self):
+        return (
+            f"Paiement {self.montant:.2f} $ "
+            f"- Réservation {self.reservation.id}"
+        )
+
+
+
 
 from django.contrib.auth.models import User
 

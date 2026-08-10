@@ -1,0 +1,262 @@
+{% extends 'base.html' %}
+
+{% block titre %}
+Nouveau paiement
+{% endblock %}
+
+{% block contenu %}
+
+<div class="container mt-4">
+
+    <div class="card shadow">
+
+        <div class="card-header bg-success text-white">
+
+            <h3 class="mb-0">
+                <i class="bi bi-cash-coin"></i>
+                Enregistrer un paiement
+            </h3>
+
+        </div>
+
+
+        <div class="card-body">
+
+
+            <!-- INFORMATIONS RÉSERVATION -->
+
+            <div class="alert alert-light border">
+
+                <div class="row g-3">
+
+                    <div class="col-12 col-md-4">
+
+                        <strong>Client :</strong><br>
+
+                        {{ reservation.nom_client }}
+
+                    </div>
+
+
+                    <div class="col-12 col-md-4">
+
+                        <strong>Appartement :</strong><br>
+
+                        {{ reservation.appartement }}
+
+                    </div>
+
+
+                    <div class="col-12 col-md-4">
+
+                        <strong>N° Réservation :</strong><br>
+
+                        #{{ reservation.id }}
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- RÉSUMÉ FINANCIER -->
+
+            <div class="row g-3 mb-4">
+
+
+                <div class="col-12 col-md-4">
+
+                    <div class="card border-primary h-100">
+
+                        <div class="card-body">
+
+                            <small class="text-muted">
+                                Total réservation
+                            </small>
+
+                            <h4 class="text-primary">
+
+                                {{ reservation.net_a_payer|floatformat:2 }}
+                                $
+
+                            </h4>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="col-12 col-md-4">
+
+                    <div class="card border-success h-100">
+
+                        <div class="card-body">
+
+                            <small class="text-muted">
+                                Total déjà payé
+                            </small>
+
+                            <h4 class="text-success">
+
+                                {{ total_paye|floatformat:2 }}
+                                $
+
+                            </h4>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="col-12 col-md-4">
+
+                    <div class="card border-danger h-100">
+
+                        <div class="card-body">
+
+                            <small class="text-muted">
+                                Reste à payer
+                            </small>
+
+                            <h4 class="text-danger">
+
+                                {{ reste_a_payer|floatformat:2 }}
+                                $
+
+                            </h4>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- ERREURS -->
+
+            {% if form.errors %}
+
+            <div class="alert alert-danger">
+
+                <strong>
+                    Veuillez corriger les erreurs :
+                </strong>
+
+                {% for field in form %}
+
+                    {% for error in field.errors %}
+
+                        <p class="mb-1">
+                            {{ error }}
+                        </p>
+
+                    {% endfor %}
+
+                {% endfor %}
+
+
+                {% for error in form.non_field_errors %}
+
+                    <p class="mb-1">
+                        {{ error }}
+                    </p>
+
+                {% endfor %}
+
+            </div>
+
+            {% endif %}
+
+
+            <!-- FORMULAIRE -->
+
+            <form method="post">
+
+                {% csrf_token %}
+
+
+                <div class="row g-3">
+
+
+                    {% for field in form %}
+
+                    <div class="col-12 col-md-6">
+
+                        <label
+                            for="{{ field.id_for_label }}"
+                            class="form-label">
+
+                            {{ field.label }}
+
+                        </label>
+
+
+                        {{ field }}
+
+
+                        {% if field.help_text %}
+
+                        <small class="text-muted">
+
+                            {{ field.help_text }}
+
+                        </small>
+
+                        {% endif %}
+
+
+                        {% if field.errors %}
+
+                        <div class="text-danger mt-1">
+
+                            {{ field.errors }}
+
+                        </div>
+
+                        {% endif %}
+
+                    </div>
+
+                    {% endfor %}
+
+                </div>
+
+
+                <hr class="my-4">
+
+
+                <button
+                    type="submit"
+                    class="btn btn-success">
+
+                    <i class="bi bi-check-circle"></i>
+
+                    Enregistrer le paiement
+
+                </button>
+
+
+                <a
+                    href="{% url 'liste_reservations' %}"
+                    class="btn btn-secondary">
+
+                    Retour
+
+                </a>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

@@ -130,19 +130,29 @@ Rapport Financier
 
     </div>
 
-    <!-- RÉSUMÉ -->
+    <!-- RÉSUMÉ FINANCIER -->
 
-    <div class="row mb-4">
+    <div class="row g-3 mb-4">
 
-        <div class="col-md-4">
+        <!-- TOTAL RÉSERVATIONS -->
 
-            <div class="card bg-success text-white">
+        <div class="col-12 col-md-6 col-lg-3">
+
+            <div class="card bg-primary text-white shadow">
 
                 <div class="card-body text-center">
 
-                    <h5>Revenus</h5>
+                    <h6>
+                        Total des réservations
+                    </h6>
 
-                    <h3>{{ revenus|floatformat:2 }} $</h3>
+                    <h3>
+                        {{ total_reservations|floatformat:2 }} $
+                    </h3>
+
+                    <small>
+                        Montant à payer
+                    </small>
 
                 </div>
 
@@ -150,15 +160,26 @@ Rapport Financier
 
         </div>
 
-        <div class="col-md-4">
 
-            <div class="card bg-danger text-white">
+        <!-- TOTAL PAYÉ -->
+
+        <div class="col-12 col-md-6 col-lg-3">
+
+            <div class="card bg-success text-white shadow">
 
                 <div class="card-body text-center">
 
-                    <h5>Dépenses</h5>
+                    <h6>
+                        Total encaissé
+                    </h6>
 
-                    <h3>{{ depenses_total|floatformat:2 }} $</h3>
+                    <h3>
+                        {{ total_paye|floatformat:2 }} $
+                    </h3>
+
+                    <small>
+                        Paiements reçus
+                    </small>
 
                 </div>
 
@@ -166,19 +187,238 @@ Rapport Financier
 
         </div>
 
-        <div class="col-md-4">
 
-            <div class="card {% if benefice >= 0 %}bg-primary{% else %}bg-dark{% endif %} text-white">
+        <!-- RESTE -->
+
+        <div class="col-12 col-md-6 col-lg-3">
+
+            <div class="card bg-warning text-dark shadow">
 
                 <div class="card-body text-center">
 
-                    <h5>Bénéfice Net</h5>
+                    <h6>
+                        Reste à encaisser
+                    </h6>
 
-                    <h3>{{ benefice|floatformat:2 }} $</h3>
+                    <h3>
+                        {{ reste_a_encaisser|floatformat:2 }} $
+                    </h3>
+
+                    <small>
+                        Montants encore dus
+                    </small>
 
                 </div>
 
             </div>
+
+        </div>
+
+        
+        <!-- DÉPENSES -->
+
+        <div class="col-12 col-md-6 col-lg-3">
+
+            <div class="card bg-danger text-white shadow">
+
+                <div class="card-body text-center">
+
+                    <h6>
+                        Dépenses
+                    </h6>
+
+                    <h3>
+                        {{ depenses_total|floatformat:2 }} $
+                    </h3>
+
+                    <small>
+                        Sorties enregistrées
+                    </small>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- TABLEAU DES PAIEMENTS -->
+
+        <div class="card shadow mb-4">
+
+            <div class="card-header bg-success text-white">
+
+                <h5 class="mb-0">
+
+                    <i class="bi bi-cash-stack"></i>
+
+                    Paiements encaissés
+
+                </h5>
+
+            </div>
+
+
+            <div class="table-responsive">
+
+                <table class="table table-bordered table-striped mb-0">
+
+                    <thead class="table-light">
+
+                        <tr>
+
+                            <th>Date</th>
+
+                            <th>Réservation</th>
+
+                            <th>Client</th>
+
+                            <th>Appartement</th>
+
+                            <th>Mode de paiement</th>
+
+                            <th>Référence</th>
+
+                            <th class="text-end">
+                                Montant
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody>
+
+                    {% for paiement in paiements %}
+
+                        <tr>
+
+                            <td>
+
+                                {{ paiement.date_paiement|date:"d/m/Y H:i" }}
+
+                            </td>
+
+
+                            <td>
+
+                                FAC-{{ paiement.reservation.date_reservation|date:"Y" }}-{{ paiement.reservation.id|stringformat:"06d" }}
+
+                            </td>
+
+
+                            <td>
+
+                                {{ paiement.reservation.nom_client }}
+
+                            </td>
+
+
+                            <td>
+
+                                {{ paiement.reservation.appartement }}
+
+                            </td>
+
+
+                            <td>
+
+                                {% if paiement.mode_paiement == "especes" %}
+
+                                    Espèces
+
+                                {% elif paiement.mode_paiement == "mobile_money" %}
+
+                                    Mobile Money
+
+                                {% elif paiement.mode_paiement == "virement" %}
+
+                                    Virement bancaire
+
+                                {% else %}
+
+                                    Autre
+
+                                {% endif %}
+
+                            </td>
+
+
+                            <td>
+
+                                {{ paiement.reference|default:"-" }}
+
+                            </td>
+
+
+                            <td class="text-end text-success">
+
+                                <strong>
+
+                                    {{ paiement.montant|floatformat:2 }} $
+
+                                </strong>
+
+                            </td>
+
+                        </tr>
+
+
+                    {% empty %}
+
+                        <tr>
+
+                            <td
+                                colspan="7"
+                                class="text-center text-muted py-3">
+
+                                Aucun paiement enregistré durant cette période.
+
+                            </td>
+
+                        </tr>
+
+                    {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+
+    <!-- SOLDE DE TRÉSORERIE -->
+
+    <div class="card shadow mb-4">
+
+        <div class="card-body text-center">
+
+            <h5>
+                Solde de trésorerie de la période
+            </h5>
+
+            <h2
+                class="{% if solde_tresorerie >= 0 %}
+                            text-success
+                    {% else %}
+                            text-danger
+                    {% endif %}"
+            >
+
+                {{ solde_tresorerie|floatformat:2 }} $
+
+            </h2>
+
+            <small class="text-muted">
+
+                Total encaissé − dépenses
+
+            </small>
 
         </div>
 

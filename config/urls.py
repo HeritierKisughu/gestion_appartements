@@ -18,6 +18,10 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from django.contrib.auth import views as auth_views
+from appartements.views import (
+    ajouter_paiement,
+    detail_reservation,
+)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -35,5 +39,19 @@ urlpatterns = [
     ),
     name="login"
     ),
+    
+    path(
+            'reservation/<int:reservation_id>/',
+            detail_reservation,
+            name='detail_reservation'
+        ),
+
+    path(
+        'reservation/<int:reservation_id>/paiement/',
+        ajouter_paiement,
+        name='ajouter_paiement'
+    ),
+
+    
 
 ]

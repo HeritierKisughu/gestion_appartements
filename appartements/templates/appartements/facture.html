@@ -1,54 +1,59 @@
 {% extends 'base.html' %}
 
+{% load static %}
+
 {% block titre %}
 Facture
 {% endblock %}
 
 {% block contenu %}
 
-{% load static %}
-
 <div class="container mt-2">
 
-    <div class="facture">
+    <div class="facture" id="facture">
 
-           <div class="row align-items-center mb-4">
+        <!-- EN-TÊTE -->
+        <div class="text-center facture-entete">
 
+            <img
+                src="{% static 'images/logo.png' %}"
+                class="facture-logo"
+                alt="Logo">
 
-    <div class="text-center mb-4">
+            <h2 class="fw-bold text-primary">
+                Ets LES 26 PROVINCES
+            </h2>
 
-        <img src="{% static 'images/logo.png' %}"
-            style="width:120px;"
-            class="mb-3">
+            <p>
+                RCCM : 22-A-0091 -
+                Id Nat : XXXXXXXX -
+                N° Impôt : XXXXXXXX
+            </p>
 
-        <h2 class="fw-bold text-primary">
-            Ets LES 26 PROVINCES
-        </h2>
+            <p>
+                📍 Kisangani - République Démocratique du Congo
+            </p>
 
-        <p class="mb-1">
-            RCCM : 22-A-0091 - Id Nat : XXXXXXXX - N° Impôt : XXXXXXXX
-        </p>
+            <p>
+                ☎ +243 997 184 984
+                ✉ etsles26province@gmail.com
+            </p>
 
-        <p class="mb-1">
-            📍 Kisangani - République Démocratique du Congo
-        </p>
+        </div>
 
-        <p class="mb-1">
-            ☎ +243 997 184 984 ✉ etsles26province@gmail.com
-        </p>
+        <hr>
 
+        <!-- TITRE -->
+        <h3 class="text-center fw-bold facture-titre">
+            FACTURE DE LOCATION
+        </h3>
 
-    </div>
+        <hr>
 
-    <hr class="my-2">
+        <!-- NUMÉRO ET DATE -->
+        <table class="table table-bordered facture-table">
 
-<h3 class="text-center fw-bold mb-1">
-    FACTURE DE LOCATION
-</h3>
-
-<hr class="my-2">
-
-        <table class="table table-bordered mb-1">
+            <tbody>
 
                 <tr>
 
@@ -64,184 +69,242 @@ Facture
 
                 </tr>
 
-            </table>
+            </tbody>
 
-            <table class="table table-bordered">
+        </table>
 
-                <tbody>
+        <!-- INFORMATIONS CLIENT -->
+        <table class="table table-bordered facture-table">
 
-                    <tr>
-                        <th width="35%">Client</th>
-                        <td>{{ reservation.nom_client }}</td>
-                    </tr>
+            <tbody>
 
-                    <tr>
-                        <th>Appartement</th>
-                        <td>{{ reservation.appartement }}</td>
-                    </tr>
+                <tr>
+                    <th width="35%">Client</th>
+                    <td>{{ reservation.nom_client }}</td>
+                </tr>
 
-                    <tr>
-                        <th>Type de location</th>
-                        <td>{{ reservation.type_location }}</td>
-                    </tr>
+                <tr>
+                    <th>Appartement</th>
+                    <td>{{ reservation.appartement }}</td>
+                </tr>
 
-                    <tr>
-                        <th>Date de réservation</th>
-                        <td>{{ reservation.date_reservation }}</td>
-                    </tr>
+                <tr>
+                    <th>Type de location</th>
+                    <td>
+                        {% if reservation.type_location == "jour" %}
+                            Par Jour
+                        {% else %}
+                            Par Mois
+                        {% endif %}
+                    </td>
+                </tr>
 
-                    <tr>
-                        <th>Date d'arrivée</th>
-                        <td>{{ reservation.date_arrivee }}</td>
-                    </tr>
+                <tr>
+                    <th>Date de réservation</th>
+                    <td>
+                        {{ reservation.date_reservation|date:"d/m/Y" }}
+                    </td>
+                </tr>
 
-                    <tr>
-                        <th>Date de départ</th>
-                        <td>{{ reservation.date_depart }}</td>
-                    </tr>
+                <tr>
+                    <th>Date d'arrivée</th>
+                    <td>
+                        {{ reservation.date_arrivee|date:"d/m/Y" }}
+                    </td>
+                </tr>
 
-                    <tr>
-                        <th>Durée</th>
-                        <td>{{ reservation.duree }}</td>
-                    </tr>
+                <tr>
+                    <th>Date de départ</th>
+                    <td>
+                        {{ reservation.date_depart|date:"d/m/Y" }}
+                    </td>
+                </tr>
 
-                </tbody>
+                <tr>
+                    <th>Durée</th>
+                    <td>
+                        {{ reservation.duree }}
 
-            </table>
+                        {% if reservation.type_location == "jour" %}
+                            jour(s)
+                        {% else %}
+                            mois
+                        {% endif %}
+                    </td>
+                </tr>
 
-            <table class="table table-bordered">
+            </tbody>
 
-                <thead class="table-dark">
+        </table>
 
-                    <tr>
+        <!-- MONTANTS -->
+        <table class="table table-bordered facture-table">
 
-                        <th>Désignation</th>
+            <thead class="table-dark">
 
-                        <th class="text-end">
-                            Montant ($)
-                        </th>
+                <tr>
 
-                    </tr>
+                    <th>
+                        Désignation
+                    </th>
 
-                </thead>
+                    <th class="text-end">
+                        Montant ($)
+                    </th>
 
-                <tbody>
+                </tr>
 
-                    <tr>
+            </thead>
 
-                        <td>
+            <tbody>
 
-                            Location Appartement
+                <tr>
 
-                        </td>
+                    <td>
+                        Location Appartement
+                    </td>
 
-                        <td class="text-end">
+                    <td class="text-end">
+                        {{ reservation.montant_location|floatformat:2 }}
+                    </td>
 
-                            {{ reservation.net_a_payer|add:"-0"|floatformat:2 }}
+                </tr>
 
-                        </td>
+                <tr>
 
-                    </tr>
+                    <td>
+                        Autres frais
+                    </td>
 
-                    <tr>
+                    <td class="text-end">
+                        {{ reservation.autres_frais|floatformat:2 }}
+                    </td>
 
-                        <td>
+                </tr>
 
-                            Autres frais
+                <tr class="table-primary">
 
-                        </td>
+                    <th>
+                        TOTAL À PAYER
+                    </th>
 
-                        <td class="text-end">
+                    <th class="text-end">
+                        {{ reservation.net_a_payer|floatformat:2 }}
+                    </th>
 
-                            {{ reservation.autres_frais }}
+                </tr>
 
-                        </td>
+            </tbody>
 
-                    </tr>
+        </table>
 
-                    <tr class="table-primary">
-
-                        <th>
-
-                            TOTAL A PAYER
-
-                        </th>
-
-                        <th class="text-end">
-
-                            {{ reservation.net_a_payer }}
-
-                        </th>
-
-                    </tr>
-
-                </tbody>
-
-            </table>
-
-        <div class="row signature align-items-end">
+        <!-- SIGNATURES -->
+        <div class="row facture-signatures">
 
             <div class="col-4 text-center">
 
-                _______________________
+                <div class="ligne-signature">
+                    __________________
+                </div>
 
-                <br>
-
-                Signature du Client
+                <small>
+                    Signature du Client
+                </small>
 
             </div>
 
-            <div class="col-4 text-center">
+            <!-- QR CODE -->
+            <div class="col-4 text-center qr-facture">
 
                 <img
                     src="{% url 'qr_facture' reservation.id %}"
-                    width="120"
-                    class="img-fluid">
+                    width="85"
+                    class="img-fluid"
+                    alt="QR Code">
 
                 <br>
 
                 <small>
-                    Scanner pour vérifier la facture
+                    Scanner pour vérifier
                 </small>
 
             </div>
 
             <div class="col-4 text-center">
 
-                _______________________
+                <div class="ligne-signature">
+                    __________________
+                </div>
 
-                <br>
-
-                Gestionnaire
+                <small>
+                    Gestionnaire
+                </small>
 
             </div>
 
         </div>
 
-            
-            <div class="text-center no-print">
+        <!-- BOUTONS -->
+        <div class="text-center no-print facture-boutons">
 
-                <button
-                    onclick="window.print()"
-                    class="btn btn-success">
+            <button
+                type="button"
+                onclick="imprimerA4()"
+                class="btn btn-success">
 
-                    🖨 Imprimer
+                🖨️ Imprimer A4
 
-                </button>
+            </button>
 
-                <a href="{% url 'liste_reservations' %}"
-                   class="btn btn-secondary">
+            <button
+                type="button"
+                onclick="imprimerTicket()"
+                class="btn btn-primary">
 
-                    Retour
+                🧾 Imprimer Ticket
 
-                </a>
+            </button>
 
-            </div>
+            <a
+                href="{% url 'liste_reservations' %}"
+                class="btn btn-secondary">
+
+                Retour
+
+            </a>
 
         </div>
 
     </div>
 
 </div>
+
+
+<script>
+
+function imprimerA4() {
+
+    document.body.classList.remove("impression-ticket");
+
+    window.print();
+
+}
+
+
+function imprimerTicket() {
+
+    document.body.classList.add("impression-ticket");
+
+    window.print();
+
+    setTimeout(function () {
+
+        document.body.classList.remove("impression-ticket");
+
+    }, 1000);
+
+}
+
+</script>
 
 {% endblock %}
