@@ -32,7 +32,7 @@ from django.db.models import Sum, Value, DecimalField
 from django.db.models.functions import Coalesce
 from .decorators import role_requis
 
-    
+from depenses.models import Depense   
 
 
 @login_required

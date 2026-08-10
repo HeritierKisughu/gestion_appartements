@@ -8,10 +8,7 @@ from appartements.models import (
     JournalActivite,
 )
 
-try:
-    from appartements.models import Depense
-except ImportError:
-    Depense = None
+from depenses.models import Depense
 
 
 class Command(BaseCommand):
@@ -55,15 +52,13 @@ class Command(BaseCommand):
         # DÉPENSES
         # ==========================================
 
-        if Depense:
+        nombre_depenses = Depense.objects.count()
 
-            nombre_depenses = Depense.objects.count()
+        Depense.objects.all().delete()
 
-            Depense.objects.all().delete()
-
-            self.stdout.write(
-                f"Dépenses supprimées : {nombre_depenses}"
-            )
+        self.stdout.write(
+            f"Dépenses supprimées : {nombre_depenses}"
+        )
 
         # ==========================================
         # JOURNAL D'ACTIVITÉ
@@ -94,6 +89,7 @@ class Command(BaseCommand):
         # ==========================================
 
         self.stdout.write("")
+
         self.stdout.write(
             self.style.SUCCESS(
                 "Base de données nettoyée avec succès."
