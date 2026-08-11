@@ -48,6 +48,14 @@ from appartements.models import (
 )
 from depenses.models import Depense
 
+#correction Render
+from django.http import HttpResponse
+
+
+def health_check(request):
+    return HttpResponse("OK")
+
+
 @login_required
 @permission_required(
     'appartements.view_reservation',
