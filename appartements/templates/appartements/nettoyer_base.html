@@ -1,0 +1,399 @@
+{% extends 'base.html' %}
+
+{% block titre %}
+Nettoyage de la base de données
+{% endblock %}
+
+
+{% block contenu %}
+
+<div class="container-fluid mt-4">
+
+    <!-- ================================================= -->
+    <!-- MESSAGES -->
+    <!-- ================================================= -->
+
+    {% if messages %}
+
+        {% for message in messages %}
+
+            <div class="alert alert-{{ message.tags }} alert-dismissible fade show">
+
+                {{ message }}
+
+                <button
+                    type="button"
+                    class="btn-close"
+                    data-bs-dismiss="alert">
+                </button>
+
+            </div>
+
+        {% endfor %}
+
+    {% endif %}
+
+
+    <!-- ================================================= -->
+    <!-- TITRE -->
+    <!-- ================================================= -->
+
+    <div class="card shadow border-danger">
+
+        <div class="card-header bg-danger text-white">
+
+            <h4 class="mb-0">
+
+                <i class="bi bi-database-x"></i>
+
+                Nettoyage de la base de données
+
+            </h4>
+
+        </div>
+
+
+        <div class="card-body">
+
+
+            <!-- ================================================= -->
+            <!-- AVERTISSEMENT -->
+            <!-- ================================================= -->
+
+            <div class="alert alert-warning">
+
+                <h5 class="alert-heading">
+
+                    <i class="bi bi-exclamation-triangle-fill"></i>
+
+                    Attention !
+
+                </h5>
+
+                <p class="mb-0">
+
+                    Cette opération est <strong>irréversible</strong>.
+
+                    Les données supprimées ne pourront pas être récupérées
+                    depuis cette interface.
+
+                </p>
+
+            </div>
+
+
+            <!-- ================================================= -->
+            <!-- DONNÉES QUI SERONT SUPPRIMÉES -->
+            <!-- ================================================= -->
+
+            <h5 class="mb-3">
+
+                Données actuellement présentes
+
+            </h5>
+
+
+            <div class="row g-3">
+
+
+                <!-- APPARTEMENTS -->
+
+                <div class="col-12 col-md-6 col-lg-4">
+
+                    <div class="card border-primary h-100">
+
+                        <div class="card-body">
+
+                            <div class="d-flex justify-content-between">
+
+                                <div>
+
+                                    <small class="text-muted">
+                                        Appartements
+                                    </small>
+
+                                    <h3 class="mb-0">
+
+                                        {{ nombre_appartements }}
+
+                                    </h3>
+
+                                </div>
+
+                                <i class="bi bi-building fs-1 text-primary"></i>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- RESERVATIONS -->
+
+                <div class="col-12 col-md-6 col-lg-4">
+
+                    <div class="card border-danger h-100">
+
+                        <div class="card-body">
+
+                            <div class="d-flex justify-content-between">
+
+                                <div>
+
+                                    <small class="text-muted">
+                                        Réservations
+                                    </small>
+
+                                    <h3 class="mb-0">
+
+                                        {{ nombre_reservations }}
+
+                                    </h3>
+
+                                </div>
+
+                                <i class="bi bi-calendar-x fs-1 text-danger"></i>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- PAIEMENTS -->
+
+                <div class="col-12 col-md-6 col-lg-4">
+
+                    <div class="card border-success h-100">
+
+                        <div class="card-body">
+
+                            <div class="d-flex justify-content-between">
+
+                                <div>
+
+                                    <small class="text-muted">
+                                        Paiements
+                                    </small>
+
+                                    <h3 class="mb-0">
+
+                                        {{ nombre_paiements }}
+
+                                    </h3>
+
+                                </div>
+
+                                <i class="bi bi-cash-stack fs-1 text-success"></i>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- DEPENSES -->
+
+                <div class="col-12 col-md-6 col-lg-4">
+
+                    <div class="card border-warning h-100">
+
+                        <div class="card-body">
+
+                            <div class="d-flex justify-content-between">
+
+                                <div>
+
+                                    <small class="text-muted">
+                                        Dépenses
+                                    </small>
+
+                                    <h3 class="mb-0">
+
+                                        {{ nombre_depenses }}
+
+                                    </h3>
+
+                                </div>
+
+                                <i class="bi bi-wallet2 fs-1 text-warning"></i>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- JOURNAUX -->
+
+                <div class="col-12 col-md-6 col-lg-4">
+
+                    <div class="card border-secondary h-100">
+
+                        <div class="card-body">
+
+                            <div class="d-flex justify-content-between">
+
+                                <div>
+
+                                    <small class="text-muted">
+                                        Journaux d'activité
+                                    </small>
+
+                                    <h3 class="mb-0">
+
+                                        {{ nombre_journaux }}
+
+                                    </h3>
+
+                                </div>
+
+                                <i class="bi bi-journal-text fs-1 text-secondary"></i>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <hr class="my-4">
+
+
+            <!-- ================================================= -->
+            <!-- CONSERVATION -->
+            <!-- ================================================= -->
+
+            <div class="alert alert-success">
+
+                <h5>
+
+                    <i class="bi bi-shield-check"></i>
+
+                    Données conservées
+
+                </h5>
+
+                <ul class="mb-0">
+
+                    <li>
+                        Utilisateurs
+                    </li>
+
+                    <li>
+                        Groupes et rôles
+                    </li>
+
+                    <li>
+                        Permissions
+                    </li>
+
+                </ul>
+
+            </div>
+
+
+            <!-- ================================================= -->
+            <!-- FORMULAIRE -->
+            <!-- ================================================= -->
+
+            <form
+                method="post"
+                action="{% url 'nettoyer_base_test' %}"
+                onsubmit="return confirmerNettoyage();">
+
+                {% csrf_token %}
+
+
+                <div class="mb-3">
+
+                    <label class="form-label fw-bold">
+
+                        Pour confirmer, tapez :
+
+                        <span class="text-danger">
+                            SUPPRIMER
+                        </span>
+
+                    </label>
+
+                    <input
+                        type="text"
+                        name="confirmation"
+                        class="form-control"
+                        placeholder="Tapez SUPPRIMER"
+                        autocomplete="off"
+                        required>
+
+                </div>
+
+
+                <div class="d-flex gap-2">
+
+                    <button
+                        type="submit"
+                        class="btn btn-danger">
+
+                        <i class="bi bi-trash3"></i>
+
+                        Supprimer les données
+
+                    </button>
+
+
+                    <a
+                        href="{% url 'dashboard' %}"
+                        class="btn btn-secondary">
+
+                        <i class="bi bi-arrow-left"></i>
+
+                        Annuler
+
+                    </a>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<script>
+
+function confirmerNettoyage() {
+
+    return confirm(
+        "ATTENTION !\n\n" +
+        "Cette opération va supprimer toutes les données métier " +
+        "(appartements, réservations, paiements, dépenses et journaux).\n\n" +
+        "Les utilisateurs et les groupes seront conservés.\n\n" +
+        "Cette opération est IRRÉVERSIBLE.\n\n" +
+        "Voulez-vous vraiment continuer ?"
+    );
+
+}
+
+</script>
+
+
+{% endblock %}

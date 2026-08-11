@@ -21,6 +21,7 @@ from django.contrib.auth import views as auth_views
 from appartements.views import (
     ajouter_paiement,
     detail_reservation,
+    nettoyer_base_test,
 )
 
 urlpatterns = [
@@ -51,6 +52,14 @@ urlpatterns = [
         ajouter_paiement,
         name='ajouter_paiement'
     ),
+
+
+    #path(
+        #'admin/nettoyer-base-test/',
+        #nettoyer_base_test,
+        #name='nettoyer_base_test'
+    #),
+   
 
     
 

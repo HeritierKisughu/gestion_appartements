@@ -1,7 +1,7 @@
 from django.urls import path
 from . import views
 from django.contrib.auth import views as auth_views
-
+from .views import nettoyer_base_test
 
 urlpatterns = [
     #path('', views.liste_reservations, name='liste_reservations'),
@@ -85,6 +85,13 @@ urlpatterns = [
     "journal/",
     views.journal_activite,
     name="journal_activite"
+    ),
+
+
+    path(
+        "nettoyer-base-test/",
+        views.nettoyer_base_test,
+        name="nettoyer_base_test"
     ),
     
 ]

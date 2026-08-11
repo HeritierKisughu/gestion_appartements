@@ -14,7 +14,7 @@ from django.http import HttpResponse
 
 from depenses.models import Depense
 
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth.decorators import permission_required
 
 from django.contrib.auth import logout
@@ -34,6 +34,19 @@ from .decorators import role_requis
 
 from depenses.models import Depense   
 
+#pour executer la commande de suppression des données
+from django.core.management import call_command
+from django.http import HttpResponseForbidden
+from django.contrib import messages
+from django.db import transaction
+
+from appartements.models import (
+    Appartement,
+    Reservation,
+    Paiement,
+    JournalActivite,
+)
+from depenses.models import Depense
 
 @login_required
 @permission_required(
@@ -1143,4 +1156,93 @@ def detail_reservation(request, reservation_id):
             'statut': statut,
         }
     )
-# Create your views here.
+
+
+
+
+@login_required
+@user_passes_test(lambda u: u.is_superuser)
+def nettoyer_base_test(request):
+
+    # =====================================================
+    # AFFICHAGE DE LA PAGE
+    # =====================================================
+
+    if request.method == "GET":
+
+        contexte = {
+            "nombre_appartements": Appartement.objects.count(),
+            "nombre_reservations": Reservation.objects.count(),
+            "nombre_paiements": Paiement.objects.count(),
+            "nombre_depenses": Depense.objects.count(),
+            "nombre_journaux": JournalActivite.objects.count(),
+        }
+
+        return render(
+            request,
+            "appartements/nettoyer_base.html",
+            contexte
+        )
+
+    # =====================================================
+    # SUPPRESSION UNIQUEMENT EN POST
+    # =====================================================
+
+    if request.method == "POST":
+
+        confirmation = request.POST.get("confirmation")
+
+        # Confirmation obligatoire
+        if confirmation != "SUPPRIMER":
+
+            messages.error(
+                request,
+                "Confirmation incorrecte. Aucune donnée n'a été supprimée."
+            )
+
+            return redirect("nettoyer_base_test")
+
+        # =================================================
+        # TRANSACTION
+        # =================================================
+
+        with transaction.atomic():
+
+            nombre_paiements = Paiement.objects.count()
+            nombre_reservations = Reservation.objects.count()
+            nombre_depenses = Depense.objects.count()
+            nombre_journaux = JournalActivite.objects.count()
+            nombre_appartements = Appartement.objects.count()
+
+            # IMPORTANT :
+            # On supprime d'abord les paiements
+            # avant les réservations.
+
+            Paiement.objects.all().delete()
+
+            Reservation.objects.all().delete()
+
+            Depense.objects.all().delete()
+
+            JournalActivite.objects.all().delete()
+
+            Appartement.objects.all().delete()
+
+        # =================================================
+        # MESSAGE DE CONFIRMATION
+        # =================================================
+
+        messages.success(
+            request,
+            (
+                "Nettoyage terminé avec succès. "
+                f"{nombre_appartements} appartement(s), "
+                f"{nombre_reservations} réservation(s), "
+                f"{nombre_paiements} paiement(s), "
+                f"{nombre_depenses} dépense(s) et "
+                f"{nombre_journaux} journal/journaux supprimé(s). "
+                "Les utilisateurs et les groupes ont été conservés."
+            )
+        )
+
+        return redirect("nettoyer_base_test")
