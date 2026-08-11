@@ -2,8 +2,16 @@ from django.urls import path
 from . import views
 from django.contrib.auth import views as auth_views
 from .views import nettoyer_base_test
+from .views import health_check
 
 urlpatterns = [
+
+    path(
+        "health/",
+        health_check,
+        name="health_check"
+    ),
+
     #path('', views.liste_reservations, name='liste_reservations'),
     path('', views.dashboard, name='dashboard'),
 

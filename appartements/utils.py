@@ -1,5 +1,6 @@
 from .models import JournalActivite
 
+
 def enregistrer_activite(
     request,
     module,
