@@ -9,3 +9,5 @@ qrcode==8.2
 pandas==2.3.2
 mysqlclient==2.2.8
 psycopg2-binary==2.9.12
+dj-database-url
+psycopg2-binary

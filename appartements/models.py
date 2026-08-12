@@ -150,9 +150,7 @@ class Paiement(models.Model):
         related_name='paiements'
     )
 
-    date_paiement = models.DateTimeField(
-        auto_now_add=True
-    )
+    date_paiement = models.DateTimeField(auto_now_add=True)
 
     montant = models.DecimalField(
         max_digits=12,
