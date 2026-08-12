@@ -272,9 +272,9 @@ def ajouter_reservation(request):
         }
     )
 
-total = Reservation.objects.aggregate(
-    Sum('net_a_payer')
-)
+#total = Reservation.objects.aggregate(
+    #Sum('net_a_payer')
+#)
 
 
 @login_required
